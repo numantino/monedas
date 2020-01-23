@@ -18,7 +18,7 @@ public class utils {
 
 	private final static boolean ACTIVAR_TRAZAS=true;
 
-	public static String PATH_PC = "D:\\_cosasRAUL\\MONEDAS"; //TODO esto se tiene que obtener de un fichero de configuracion
+	public static String PATH_PC = "D:\\RaulPersonal\\MONEDAS"; //TODO esto se tiene que obtener de un fichero de configuracion
 	private static String PATH_LOGS = PATH_PC + "\\" + constantesMonedas.PATH_MONEDAS + "\\logs";
 	private static String PATH_FILE_Y = utils.PATH_PC + "\\" + constantesMonedas.PATH_MONEDAS + "\\sonY.txt";
 	private List<String> listaMonedasY = new ArrayList<>();
