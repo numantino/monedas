@@ -166,6 +166,24 @@ public class constantesDatabase {
 	public static final String[] PESETA_A_TODO ={PESETA_A_ID,PESETA_A_ANO,PESETA_A_ESTRELLA,PESETA_A_CECA,PESETA_A_TIRADA,PESETA_A_ESTA,PESETA_A_ESTADO};
 
 	/**
+	 * Tabla en DB de Billetes
+	 */
+	public static final String BILLETE_NAME = "Billetes";
+	public static final String BILLETE_ID = "id";
+	public static final String BILLETE_PAIS = "Pais";
+	public static final String BILLETE_DENOMINACION = "denominacion";
+	public static final String BILLETE_FECHA = "fecha";
+	public static final String BILLETE_NOTAS = "notas";
+	public static final String sqlCrearBilletes = "CREATE TABLE " + BILLETE_NAME +
+			"(" + BILLETE_ID + " INTEGER NOT NULL UNIQUE," +
+			BILLETE_PAIS + "INTEGER," +
+			BILLETE_DENOMINACION + "INTEGER," +
+			BILLETE_FECHA + "TEXT," +
+			BILLETE_NOTAS + "TEXT)";
+	
+	//Seleccion / sentencias SQL
+	public static final String[] BILLETE_TODO ={BILLETE_ID,BILLETE_PAIS,BILLETE_DENOMINACION,BILLETE_FECHA,BILLETE_NOTAS};
+	/**
 	 * Tabla en DB de INFORMACION 
 	 */
 	public static final String INFORMACION_NAME = "INFORMACION";

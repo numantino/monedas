@@ -19,7 +19,6 @@ import es.raul.monedas.constantes.constantesLiterales;
 import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedas.objetos.euros.monedaEuro;
 import es.raul.monedas.objetos.euros.monedaEuroCon;
-import es.raul.monedasAPP.vista_infoBilletes;
 import es.raul.monedasAPP.vista_infoMonedas;
 import es.raul.monedasAPP.vista_infoMonedasPeseta;
 import es.raul.monedasAPP.utilidades.lecturasDB;
@@ -605,12 +604,6 @@ public class monedasJpanel extends JPanel {
 		case constantesMonedas.TIPO_PESETA:{
 			vista_infoMonedasPeseta v = new vista_infoMonedasPeseta();
 			v.mostrarMonedaPeseta(info.getIdMoneda(), info.getValorAux());
-			v.setVisible(true);
-			break;
-		}
-		case constantesMonedas.TIPO_BILLETE:{
-			vista_infoBilletes v = new vista_infoBilletes();
-			v.mostrarBilletes(info.getIdMoneda());
 			v.setVisible(true);
 			break;
 		}

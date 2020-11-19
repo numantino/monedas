@@ -12,6 +12,7 @@ import java.util.List;
 import es.raul.monedas.constantes.constantesDatabase;
 import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedas.constantes.constantesMonedas.CONTINENTES;
+import es.raul.monedas.objetos.billete.billete;
 import es.raul.monedas.objetos.euros.listaMonedaEuro;
 import es.raul.monedas.objetos.euros.monedaEuro;
 import es.raul.monedas.objetos.euros.monedaEuroCon;
@@ -836,7 +837,36 @@ public class lecturasDB {
 
 		return value;
 	}
+	/************************************* BILLETES ***********************************************************************************/
+	private final static String sqlLeerListaBilletes = "SELECT * FROM " + constantesDatabase.BILLETE_NAME + ";";
+	public List<billete> DBLeerBilletes(){
+		List<billete> listaBilletes = new ArrayList<billete>();
 
+		//leemos datos de la DB
+		String sql = sqlLeerListaBilletes;
+		util.escribirTrazas(NOMBRE_CLASS,"DBLeerBilletes--> SQL: [" + sql + "]");
+
+		ResultSet valores=DBExecuteQuery(sql);
+
+		if (valores!=null){
+			try {
+				while (valores.next()) {
+					billete b = new billete(
+							valores.getInt(constantesDatabase.BILLETE_ID),
+							valores.getString(constantesDatabase.BILLETE_PAIS),
+							valores.getString(constantesDatabase.BILLETE_DENOMINACION),
+							valores.getInt(constantesDatabase.BILLETE_FECHA),
+							valores.getString(constantesDatabase.BILLETE_NOTAS));
+
+					listaBilletes.add(b);
+				}				
+			} catch (Exception e) {
+				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerBilletes", e);
+			}
+		}
+
+		return listaBilletes;
+	}
 	/************************************* INFORMACION ***********************************************************************************/
 	//example: SELECT * FROM  INFORMACION WHERE TAG='';
 	private final static String sqlLeerFechaActualizacion = "SELECT * FROM " + 
