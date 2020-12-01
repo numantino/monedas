@@ -23,10 +23,10 @@ import es.raul.monedas.objetos.mundo.moneda;
 
 public class generarPdf {
 	private final static String NOMBRE_CLASS="generarPdf   ";
-	private final static String PATH_PDF =  utils.getPath() + File.separator + constantesMonedas.PATH_MONEDAS + File.separator + "Pdfs"+ File.separator;
-	private final static String PATH_IMA =  utils.getPath() + File.separator + constantesMonedas.PATH_MONEDAS + File.separator;
+	private String PATH_PDF;
+	private String PATH_IMA;
 	//
-	private utils util = utils.getInstance();
+	private utilLog util = utilLog.getInstance();
 	//lecturas de la DB
 	private lecturasDB lectura = new lecturasDB();
 
@@ -43,6 +43,10 @@ public class generarPdf {
 
 	public generarPdf() {
 		this.pais="";
+		//Paths
+		String path= utils.getInstance().getPath();
+		PATH_PDF =  path + "Pdfs"+ File.separator;
+		PATH_IMA =  path;
 	}
 
 	public void setPais(String pais) {

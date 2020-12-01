@@ -22,6 +22,7 @@ import es.raul.monedas.objetos.euros.monedaEuroCon;
 import es.raul.monedasAPP.vista_infoMonedas;
 import es.raul.monedasAPP.vista_infoMonedasPeseta;
 import es.raul.monedasAPP.utilidades.lecturasDB;
+import es.raul.monedasAPP.utilidades.utilLog;
 import es.raul.monedasAPP.utilidades.utils;
 
 /**
@@ -56,7 +57,7 @@ public class monedasJpanel extends JPanel {
 
 	//objetos necesario para la lectura de la DB
 	private lecturasDB lectura = new lecturasDB();
-	private utils util = utils.getInstance();
+	private utilLog uLog = utilLog.getInstance();
 
 
 	/**
@@ -295,7 +296,7 @@ public class monedasJpanel extends JPanel {
 	 */
 	protected void botonEuroConmemorativo() {
 		String pais=listaCompleta.getValorAux();
-		util.escribirTrazas(NOMBRE_CLASS,"botonEuroConmemorativo() "+pais);
+		uLog.escribirTrazas(NOMBRE_CLASS,"botonEuroConmemorativo() "+pais);
 
 		List<monedaEuroCon> nombreMonedaCon = lectura.DBLeerMonedaEuroCon(pais);
 		informacionJPanelMonedas valorFinal = new informacionJPanelMonedas();
@@ -368,7 +369,7 @@ public class monedasJpanel extends JPanel {
 	 * @param i
 	 */
 	private void botonPulsado(int i) {
-		util.escribirTrazas(NOMBRE_CLASS,"Se a pulsado el boton="+i);
+		uLog.escribirTrazas(NOMBRE_CLASS,"Se a pulsado el boton="+i);
 
 		try{
 			switch (tipo) {
@@ -380,8 +381,8 @@ public class monedasJpanel extends JPanel {
 						//Incluimos un mensaje de confirmacion para
 						int reply = JOptionPane.showConfirmDialog(null, constantesLiterales.TXT_MSN_MODIFICAR, "", JOptionPane.YES_NO_OPTION);
 						if (reply == JOptionPane.YES_OPTION){
-							util.escribirTrazas(NOMBRE_CLASS, constantesLiterales.TXT_MSN_MODIFICAR_1 + listaCompleta.getValorAux() + constantesLiterales.TXT_MSN_MODIFICAR_2 + util.getDenominacion(i-1));
-							lectura.DBIncluirMonedaEuro(listaCompleta.getValorAux(), util.getDenominacion(i-1));
+							uLog.escribirTrazas(NOMBRE_CLASS, constantesLiterales.TXT_MSN_MODIFICAR_1 + listaCompleta.getValorAux() + constantesLiterales.TXT_MSN_MODIFICAR_2 + utils.getDenominacion(i-1));
+							lectura.DBIncluirMonedaEuro(listaCompleta.getValorAux(), utils.getDenominacion(i-1));
 							//Refrescamos la informacion
 							listaCompleta.getLista().get((posicion+i)-1).setTengoMonedaEuro();
 							pinarBotones(listaCompleta);
@@ -402,7 +403,7 @@ public class monedasJpanel extends JPanel {
 				else if (listaCompleta.getLista().size()==i-1){
 					int reply = JOptionPane.showConfirmDialog(null, constantesLiterales.TXT_MSN_INSERTAR_MONEDA, "", JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION){
-						util.escribirTrazas(NOMBRE_CLASS,"Se va ha incluir una nueva moneda (NO IMPLEMENTADO)");
+						uLog.escribirTrazas(NOMBRE_CLASS,"Se va ha incluir una nueva moneda (NO IMPLEMENTADO)");
 						//TODO esto faltaria por implementa
 					}
 				} 
@@ -421,7 +422,7 @@ public class monedasJpanel extends JPanel {
 				else if (listaCompleta.getLista().size()==i-1){
 					int reply = JOptionPane.showConfirmDialog(null, constantesLiterales.TXT_MSN_INSERTAR_BILLETE, "", JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION){
-						util.escribirTrazas(NOMBRE_CLASS,"Se va ha incluir un nuevo billete");
+						uLog.escribirTrazas(NOMBRE_CLASS,"Se va ha incluir un nuevo billete");
 						//TODO insertar un nuevo billete
 					}
 				} 
@@ -437,7 +438,7 @@ public class monedasJpanel extends JPanel {
 	 * @param p
 	 */
 	public void setTipoMoneda(int p){
-		util.escribirTrazas(NOMBRE_CLASS,"tipo de boton "+tipo);
+		uLog.escribirTrazas(NOMBRE_CLASS,"tipo de boton "+tipo);
 		this.tipo=p;
 		this.posicion=0;
 	}
@@ -519,7 +520,7 @@ public class monedasJpanel extends JPanel {
 					label.setForeground(colorTexto);
 				}
 				catch(Exception e){
-					util.escribirError(NOMBRE_CLASS,"error boton "+i);
+					uLog.escribirError(NOMBRE_CLASS,"error boton "+i);
 					label.setText("");
 					boton.setIcon(new ImageIcon(""));
 					boton.setBackground(Color.GRAY);
@@ -561,8 +562,8 @@ public class monedasJpanel extends JPanel {
 	 * @return
 	 */
 	public ImageIcon getPathMoneda(String ruta, String nombre, String extension, int ancho, int alto){
-		String path = util.obtenerPathImagen(ruta, nombre, extension);
-		util.escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
+		String path = utils.getInstance().obtenerPathImagen(ruta, nombre, extension);
+		uLog.escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
 
 		ImageIcon imagenOriginal = new ImageIcon(path);
 
@@ -592,7 +593,7 @@ public class monedasJpanel extends JPanel {
 	 * @param continente
 	 */
 	private void mostrarInformacionDetalladaMoneda(informacionBotonMoneda info){
-		util.escribirTrazas(NOMBRE_CLASS,"mostrarInformacionMonedasMundo() ");
+		uLog.escribirTrazas(NOMBRE_CLASS,"mostrarInformacionMonedasMundo() ");
 
 		switch (tipo) {
 		case constantesMonedas.TIPO_MUNDO:{			

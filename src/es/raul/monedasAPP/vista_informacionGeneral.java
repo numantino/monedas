@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import es.raul.monedas.constantes.constantesLiterales;
 import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedasAPP.utilidades.lecturasDB;
-import es.raul.monedasAPP.utilidades.utils;
+import es.raul.monedasAPP.utilidades.utilLog;
 
 /**
  * 
@@ -341,7 +341,7 @@ public class vista_informacionGeneral extends JFrame {
 	}
 	
 	private void generarInformacion() {		
-		utils.getInstance().escribirTrazas(NOMBRE_CLASS, "generarInformacion() generamos la informacion de las monedas");
+		utilLog.getInstance().getInstance().escribirTrazas(NOMBRE_CLASS, "generarInformacion() generamos la informacion de las monedas");
 
 		//INFORMACION MONEDAS MUNDO
 		int numFinalPaises = 0;

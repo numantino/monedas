@@ -3,11 +3,8 @@ package es.raul.monedasAPP.utilidades;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Paths;
 
 import es.raul.monedas.constantes.constantesDatabase;
 import es.raul.monedas.constantes.constantesMonedas;
@@ -16,75 +13,46 @@ import es.raul.monedas.constantes.constantesMonedas;
 
 public class utils {
 
-	private final static boolean ACTIVAR_TRAZAS=true;
-
-	public static String PATH_PC = "D:\\RaulPersonal\\MONEDAS"; //TODO esto se tiene que obtener de un fichero de configuracion
-	private static String PATH_LOGS = PATH_PC + "\\" + constantesMonedas.PATH_MONEDAS + "\\logs";
-	private static String PATH_FILE_Y = utils.PATH_PC + "\\" + constantesMonedas.PATH_MONEDAS + "\\sonY.txt";
-	private List<String> listaMonedasY = new ArrayList<>();
-
 	private static utils instancia = new utils();
+	
+	public final String CONFIGURADOR = "coleccionMonedas.conf";
+	
+	private String PATH;
+	private String PATH_PC;
 
 	public static utils getInstance () {
 		return instancia;
 	}
-
+	
 	private utils(){
-		//Obtener datos de valores de Y
-		readFileValoresY();
-	}
-
-
-	/**
-	 * ************************ TRAZAS ************************
-	 */
-	public void escribirError(String titulo, String msn){
-		if (ACTIVAR_TRAZAS) System.err.println(titulo + msn);
-		//		escribirFichero(PATH_LOGS + "\\error.log", msn);
-	}
-	public void escribirExcepcion(String titulo, String metodo, Exception e){
-		if (ACTIVAR_TRAZAS) System.err.println(titulo + metodo + e.getMessage());
-		//		escribirFichero(PATH_LOGS + "\\error.log", titulo + metodo + e.getMessage());
-	}
-	public void escribirTrazas(String titulo, String msn){
-		if (ACTIVAR_TRAZAS) System.out.println(titulo + msn);
-		//		escribirFichero(PATH_LOGS + "\\trazas.log", msn);
-	}
-
-	public void escribirFaltaImagen(String msn){
-		if (ACTIVAR_TRAZAS) System.out.println(msn);
-		escribirFichero(PATH_LOGS + "\\noExisteLaImagen.log", msn);
-	}
-	/**
-	 * Funcion que escribe en un fichero de texto
-	 */
-	public void escribirFichero(String path, String dato)
-	{
-		FileWriter fichero = null;
-		PrintWriter pw = null;
-		try
-		{
-			fichero = new FileWriter(path,true);
-			pw = new PrintWriter(fichero);
-
-			pw.write(dato + "\n");
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		} finally {
-			try {
-				if (null != fichero)
-					fichero.close();
-			} catch (Exception e2) {
-			}
-		}
+		//Obtenemos el directorio actual
+		PATH = Paths.get("").toAbsolutePath().toString() + File.separator;
+		System.out.println("PATH="+PATH);
+		//Ruta donde se encuentra el proyecto
+		PATH_PC = leerFichero(PATH,CONFIGURADOR,"PATH_PC");
 	}
 	/**
 	 * Funcion que lee de un fichero de texto
 	 */
-	public String leerFichero(String path, String datoLeer){
+	public String leerFichero(String path, String file, String datoLeer){
 		String datoLeido="";
-		//TODO implementar esta parte
+
+		
+		String cadena;
+		boolean fin=false;
+		FileReader f;
+		try {
+			f = new FileReader(path + file);
+			BufferedReader b = new BufferedReader(f);
+			while(!fin && (cadena = b.readLine())!=null) {
+				String[] parts = cadena.split("=");
+				if (parts[0].equalsIgnoreCase(datoLeer)) {
+					datoLeido=parts[1];
+					fin=true;
+				}
+			}
+			b.close();
+		} catch (IOException e) {}
 		return datoLeido;
 	}
 	/**
@@ -94,17 +62,13 @@ public class utils {
 		String path = "";
 		try{
 			path= PATH_PC + File.separator 
-					+ constantesMonedas.PATH_MONEDAS + File.separator
 					+ ruta + File.separator					
 					+ nombre + extension;
 
 			File imgFile = new  File(path);
 			if(!imgFile.exists()){
-				//Informamos de que no existe esta moneda
-				escribirFaltaImagen(path);
 				//Ponemos la imagen por defecto
-				path = PATH_PC + File.separator 
-						+ constantesMonedas.PATH_MONEDAS + File.separator				
+				path = PATH_PC + File.separator 			
 						+ constantesMonedas.IMAGEN_BASE + constantesMonedas.IMAGEN_PATH_PNG;
 			}
 		}
@@ -113,9 +77,22 @@ public class utils {
 		return path;
 	}
 	/**
+	 * Obtenemos el path donde se esta almacenada toda la informacion relacionada con las monedas.
+	 * @return
+	 */
+	public String getPath() {
+		return PATH_PC + File.separator;
+	}
+	public boolean isTrazas() {
+		String val = leerFichero(PATH,CONFIGURADOR,"ACTIVAR_TRAZAS").toLowerCase();
+		if (val.equalsIgnoreCase("true")) return true;
+		else return false;
+	}
+	//****************************************** static ***********************************************************
+	/**
 	 *Devuelve la denominacion en euros de una determinada posicion
 	 */	
-	public String getDenominacion(int pos){
+	public static String getDenominacion(int pos){
 		String aux;
 		switch (pos) {
 		case 0: aux=constantesDatabase.EURO_1C; break;
@@ -133,7 +110,7 @@ public class utils {
 	/**
 	 * Devuelve el literal de los centimos, que se le puede añadir la palaba ' de ' en el caso necesario para construir el dialogo a mostrar
 	 */
-	public String getDenominacionString(int pos, boolean flag){
+	public static String getDenominacionString(int pos, boolean flag){
 		String aux;
 		switch (pos) {
 		case 0: aux="1 centimo"; break;
@@ -149,51 +126,5 @@ public class utils {
 
 		if (flag) aux=aux+" de ";
 		return aux;
-	}
-
-	/**
-	 * 
-	 */
-	public int getContinente(String continente){
-		//TODO ver como hacer esto
-
-		return 0;
-	}
-	/**
-	 * Obtenemos el path donde se esta almacenada toda la informacion relacionada con las monedas.
-	 * @return
-	 */
-	public static String getPath() {
-		return PATH_PC;
-	}
-	
-	/**
-	 * 
-	 */
-	private boolean readFileValoresY(){
-		boolean noError=true;
-
-		String cadena;
-		FileReader f;
-		try {
-			f = new FileReader(PATH_FILE_Y);
-			BufferedReader b = new BufferedReader(f);
-			while((cadena = b.readLine())!=null) {
-				listaMonedasY.add(cadena);
-			}
-			b.close();
-		} catch (IOException e) {}
-		return noError;
-	}
-	public boolean esY(String pais){
-		if (pais==null || listaMonedasY.size()<0) return false;
-
-		int i=0;
-		boolean fin=false;
-		while (!fin && i<listaMonedasY.size()){
-			if (listaMonedasY.get(i).equals(pais)) fin =true;
-			else i++;
-		}
-		return fin;
 	}
 }

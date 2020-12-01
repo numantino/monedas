@@ -8,8 +8,6 @@ public class insertarNuevaMoneda {
 	private String nuevoPais;
 	private String nuevoContinente;
 	
-	private utils util = utils.getInstance();
-	
 	
 	public insertarNuevaMoneda() {
 		this.nuevoPais = "";
@@ -26,7 +24,7 @@ public class insertarNuevaMoneda {
 	 * Inserta una nueva moneda de un pais que ya se tiene
 	 */
 	public void insertarMonedaNueva(){
-		util.escribirTrazas(NOMBRE_CLASS,"insertarMonedaNueva() con Continente="+nuevoContinente+", Pais="+nuevoPais);
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"insertarMonedaNueva() con Continente="+nuevoContinente+", Pais="+nuevoPais);
 		
 		//Lanzamos la vista
 		vista_insertarMoneda in = new vista_insertarMoneda();
@@ -38,7 +36,7 @@ public class insertarNuevaMoneda {
 	 * Inserta una nueva moneda de un pais que aun no se tiene
 	 */
 	public void insertarNuevoPaisMoneda(){
-		util.escribirTrazas(NOMBRE_CLASS,"insertarNuevoPaisMoneda()");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"insertarNuevoPaisMoneda()");
 		
 		//TODO primero lanzamos la vista para crear el nuevo pais
 		

@@ -24,6 +24,7 @@ import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedas.objetos.mundo.monedaExt;
 import es.raul.monedasAPP.objetos.imagenJpanel;
 import es.raul.monedasAPP.utilidades.lecturasDB;
+import es.raul.monedasAPP.utilidades.utilLog;
 import es.raul.monedasAPP.utilidades.utils;
 
 
@@ -81,8 +82,6 @@ public class vista_infoMonedas extends JFrame {
 
 	//Lectura de la DB
 	private lecturasDB lectura = new lecturasDB();
-	private utils util = utils.getInstance();
-
 
 	/**
 	 * Launch the application.
@@ -289,7 +288,7 @@ public class vista_infoMonedas extends JFrame {
 																.addComponent(textValor, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE))
 														.addComponent(textTitulo, GroupLayout.PREFERRED_SIZE, 409, GroupLayout.PREFERRED_SIZE)
 														.addGroup(gl_contentPane.createSequentialGroup()
-																.addComponent(lblK, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+																.addComponent(lblK, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 																.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 																.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 																		.addComponent(textID, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
@@ -321,7 +320,7 @@ public class vista_infoMonedas extends JFrame {
 																.addComponent(textID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 														.addPreferredGap(ComponentPlacement.RELATED)
 														.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-																.addComponent(lblK, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+																.addComponent(lblK, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 																.addComponent(textKM, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 														.addPreferredGap(ComponentPlacement.RELATED)
 														.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
@@ -387,7 +386,7 @@ public class vista_infoMonedas extends JFrame {
 	 * mostramos la informacion de la MONEDA MUNDO
 	 */
 	public void mostrarMoneda(int valorIdMoneda, String continente){
-		util.escribirTrazas(NOMBRE_CLASS,"mostrarMoneda() Mostramos la informacion de la moneda con ID="+valorIdMoneda);
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"mostrarMoneda() Mostramos la informacion de la moneda con ID="+valorIdMoneda);
 
 		//Ponemos todos los objetos solo para ver
 		modoTextoSoloLectura();
@@ -417,7 +416,7 @@ public class vista_infoMonedas extends JFrame {
 			//Insertamos la imagen de la moneda
 			getPathMoneda("",continente+File.separator+ Integer.toString(valorIdMoneda),constantesMonedas.IMAGEN_PATH_PNG);
 		}
-		else util.escribirTrazas(NOMBRE_CLASS,"mostrarMonedaMundo() Los datos de la moneda no se han obtenido correctamente");
+		else utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"mostrarMonedaMundo() Los datos de la moneda no se han obtenido correctamente");
 	}
 	/**
 	 * Metodo que pone los objetos de texto para que no se puedan modificar
@@ -429,8 +428,8 @@ public class vista_infoMonedas extends JFrame {
 	 * Inserta la ruta de la imagen en el objeto
 	 */
 	private void getPathMoneda(String ruta, String nombre, String extension){
-		String path = util.obtenerPathImagen(ruta, nombre, extension);
-		util.escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
+		String path = utils.getInstance().obtenerPathImagen(ruta, nombre, extension);
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
 		panelImagen.setBackground(path);
 	}
 }

@@ -27,6 +27,7 @@ import es.raul.monedas.objetos.mundo.localizacion;
 import es.raul.monedas.objetos.mundo.monedaExt;
 import es.raul.monedasAPP.objetos.imagenJpanel;
 import es.raul.monedasAPP.utilidades.lecturasDB;
+import es.raul.monedasAPP.utilidades.utilLog;
 import es.raul.monedasAPP.utilidades.utils;
 
 
@@ -86,7 +87,6 @@ public class vista_insertarMoneda extends JFrame {
 
 	//Lectura de la DB
 	private lecturasDB lectura = new lecturasDB();
-	private utils util = utils.getInstance();
 	private JTextField textFecha;
 	private JLabel lblFecha;
 
@@ -439,13 +439,13 @@ public class vista_insertarMoneda extends JFrame {
 	 * 
 	 */
 	private void botonInsertarNuevaMoneda() {
-		util.escribirTrazas(NOMBRE_CLASS,"Se a pulsado el botonInsertarNuevaMoneda");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"Se a pulsado el botonInsertarNuevaMoneda");
 		//Obtenemos la informacion de la moneda que se ha insertado
 		monedaExt mon = obtenerInformacion();		
-		util.escribirTrazas(NOMBRE_CLASS,"Datos de la moneda --> "+mon.toString());
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"Datos de la moneda --> "+mon.toString());
 		lectura.DBInsertarMoneda(mon);
 		JOptionPane.showMessageDialog(null, "Moneda insertada correctamente");
-		util.escribirTrazas(NOMBRE_CLASS,"Valor insertado en la DB");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"Valor insertado en la DB");
 
 		//Modificamos la fecha del ultimo cambio
 		lectura.modificarFechaUltimoCambio();
@@ -455,7 +455,7 @@ public class vista_insertarMoneda extends JFrame {
 	 * Insertamos una nueva moneda
 	 */
 	public void insertarMoneda(String continente, String pais){
-		util.escribirTrazas(NOMBRE_CLASS,"Creacion de la vista insertarMoneda");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"Creacion de la vista insertarMoneda");
 		//Modificamos el nombre del boton 
 		btnModificar.setText(constantesLiterales.BOTON_INSERTAR);
 		//Lo primero realizamos un borrado de todos los datos
@@ -485,10 +485,10 @@ public class vista_insertarMoneda extends JFrame {
 		while (!datosCorrectos){
 			//			if (listaTextLayout.get(2).getText().length()<0 || noExisteKM){   //TODO ver como hacer esta parte, para cuando aun no este el KM
 			if (listaTextLayout.get(2).getText().length()<0){
-				util.escribirTrazas(NOMBRE_CLASS,"No esta el valor de KM que es obligatorio");
+				utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"No esta el valor de KM que es obligatorio");
 			}
 			else if (listaTextLayout.get(4).getText().length()<0){
-				util.escribirTrazas(NOMBRE_CLASS,"No esta el valor de ESTADO que es obligatorio");
+				utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"No esta el valor de ESTADO que es obligatorio");
 			}
 			else{
 				datosCorrectos=true;
@@ -521,14 +521,5 @@ public class vista_insertarMoneda extends JFrame {
 	 */
 	private void modoTextoEscritura(){
 		for (int i=0; i<listaTextLayout.size();i++) listaTextLayout.get(i).setEditable(true);
-	}
-
-	/**
-	 * Inserta la ruta de la imagen en el objeto
-	 */
-	private void getPathMoneda(String ruta, String nombre, String extension){
-		String path = util.obtenerPathImagen(ruta, nombre, extension);
-		util.escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
-		panelImagen.setBackground(path);
 	}
 }

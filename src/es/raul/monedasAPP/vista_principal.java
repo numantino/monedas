@@ -30,6 +30,7 @@ import es.raul.monedasAPP.objetos.monedasJpanel;
 import es.raul.monedasAPP.utilidades.generarPdf;
 import es.raul.monedasAPP.utilidades.insertarNuevaMoneda;
 import es.raul.monedasAPP.utilidades.lecturasDB;
+import es.raul.monedasAPP.utilidades.utilLog;
 import es.raul.monedasAPP.utilidades.utils;
 
 /**
@@ -68,7 +69,7 @@ public class vista_principal extends JFrame {
 	private String botonPulsadoValue;
 	//lecturas de la DB
 	private lecturasDB lectura = new lecturasDB();
-	private utils util = utils.getInstance();
+	private utilLog uLog = utilLog.getInstance();
 	//Objeto para generar el pdf
 	private generarPdf objetoGenerarPdf = new generarPdf();
 	//Objeto para insertar una nueva moneda
@@ -110,7 +111,7 @@ public class vista_principal extends JFrame {
 		JButton btnAfrica = new JButton(constantesMonedas.CONTINENTES.AFRICA.getNombre());
 		btnAfrica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AFRICA");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AFRICA");	
 				botonPulsado=constantesMonedas.CONTINENTES.AFRICA.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.AFRICA.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -121,7 +122,7 @@ public class vista_principal extends JFrame {
 		JButton btnEuropa = new JButton(constantesMonedas.CONTINENTES.EUROPA.getNombre());
 		btnEuropa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de EUROPA");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de EUROPA");	
 				botonPulsado=constantesMonedas.CONTINENTES.EUROPA.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.EUROPA.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -132,7 +133,7 @@ public class vista_principal extends JFrame {
 		JButton btnAsia = new JButton(constantesMonedas.CONTINENTES.ASIA.getNombre());
 		btnAsia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de ASIA");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de ASIA");	
 				botonPulsado=constantesMonedas.CONTINENTES.ASIA.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.ASIA.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -143,7 +144,7 @@ public class vista_principal extends JFrame {
 		JButton btnAmNorte = new JButton(constantesMonedas.CONTINENTES.AMERICA_NORTE.getNombre());
 		btnAmNorte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AMERICA DEL NORTE");
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AMERICA DEL NORTE");
 				botonPulsado=constantesMonedas.CONTINENTES.AMERICA_NORTE.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.AMERICA_NORTE.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -154,7 +155,7 @@ public class vista_principal extends JFrame {
 		JButton btnAmSur = new JButton(constantesMonedas.CONTINENTES.AMERICA_SUR.getNombre());
 		btnAmSur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AMERICA DEL SUR");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AMERICA DEL SUR");	
 				botonPulsado=constantesMonedas.CONTINENTES.AMERICA_SUR.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.AMERICA_SUR.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -165,7 +166,7 @@ public class vista_principal extends JFrame {
 		JButton btnAmCentral = new JButton(constantesMonedas.CONTINENTES.AMERICA_CENTRAL.getNombre());
 		btnAmCentral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AMERICA CENTRAL");
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de AMERICA CENTRAL");
 				botonPulsado=constantesMonedas.CONTINENTES.AMERICA_CENTRAL.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.AMERICA_CENTRAL.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -176,7 +177,7 @@ public class vista_principal extends JFrame {
 		JButton btnOceania = new JButton(constantesMonedas.CONTINENTES.OCEANIA.getNombre());
 		btnOceania.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de OCEANIA");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de OCEANIA");	
 				botonPulsado=constantesMonedas.CONTINENTES.OCEANIA.getNombre();
 				botonPulsadoValue = constantesMonedas.CONTINENTES.OCEANIA.getNumeroString();
 				crearListaBotones(lectura.DBLeerPaisNombres(botonPulsadoValue), constantesMonedas.TIPO_MUNDO);
@@ -187,7 +188,7 @@ public class vista_principal extends JFrame {
 		JButton btnEuros = new JButton(constantesLiterales.BOTON_EUROS);
 		btnEuros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de EUROS");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de EUROS");	
 				crearListaBotones(lectura.DBLeerPaisEuro(), constantesMonedas.TIPO_EURO);
 			}
 		});
@@ -196,7 +197,7 @@ public class vista_principal extends JFrame {
 		JButton btnPesetas = new JButton(constantesLiterales.BOTON_PESETA);
 		btnPesetas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de PESETA");
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de PESETA");
 				crearListaBotones(lectura.DBLeerPeriodosPeseta(), constantesMonedas.TIPO_PESETA);
 			}
 		});
@@ -207,15 +208,15 @@ public class vista_principal extends JFrame {
 		btnEstadisticas.setForeground(Color.BLUE);
 		btnEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util.escribirTrazas(NOMBRE_CLASS,"boton pulsado de INFORMACION MONEDAS");	
+				uLog.escribirTrazas(NOMBRE_CLASS,"boton pulsado de INFORMACION MONEDAS");	
 				vista_informacionGeneral v = new vista_informacionGeneral();		
 				v.setVisible(true);
 			}
 		});
 		
 		btGenerarPdf = new JButton("");
-		String rutaIcono = util.getPath() + File.separator 
-				+ constantesMonedas.PATH_MONEDAS + File.separator				
+		utils util = utils.getInstance();
+		String rutaIcono = util.getPath() 			
 				+ constantesMonedas.IMAGEN_ICONO_PDF + constantesMonedas.IMAGEN_PATH_PNG;
 		btGenerarPdf.setIcon(new ImageIcon(rutaIcono));
 		btGenerarPdf.setVisible(false);
@@ -226,8 +227,7 @@ public class vista_principal extends JFrame {
 		});
 		
 		btnNuevaMoneda = new JButton("");
-		String rutaIcono2 = util.getPath() + File.separator 
-				+ constantesMonedas.PATH_MONEDAS + File.separator				
+		String rutaIcono2 = util.getPath()			
 				+ constantesMonedas.IMAGEN_ICONO_MAS + constantesMonedas.IMAGEN_PATH_PNG;
 		btnNuevaMoneda.setIcon(new ImageIcon(rutaIcono2));
 		btnNuevaMoneda.setVisible(false);
@@ -330,7 +330,7 @@ public class vista_principal extends JFrame {
 
 		//TODO ver si se puede poner scroll???
 		if (lista!=null && lista.size()>0){
-			util.escribirTrazas(NOMBRE_CLASS,"crearListaBotones(), Se van a crear " + lista.size() + " botones");
+			uLog.escribirTrazas(NOMBRE_CLASS,"crearListaBotones(), Se van a crear " + lista.size() + " botones");
 			for (int i=0; i<lista.size();i++){
 				final String name = lista.get(i);
 				JButton btn = new JButton(name);
@@ -342,7 +342,7 @@ public class vista_principal extends JFrame {
 				panelListado.add(btn);
 			}
 		}
-		else util.escribirTrazas(NOMBRE_CLASS,"crearListaBotones(), No tenemos informacion");
+		else uLog.escribirTrazas(NOMBRE_CLASS,"crearListaBotones(), No tenemos informacion");
 
 		panelListado.updateUI();
 	}
@@ -351,7 +351,7 @@ public class vista_principal extends JFrame {
 	 * Metodo que pone las monedas en el JPanel
 	 */
 	private void pintarMonedas(String valor, int tipo) {
-		util.escribirTrazas(NOMBRE_CLASS,"pintarMonedas() con valor="+valor+", tipo="+tipo);
+		uLog.escribirTrazas(NOMBRE_CLASS,"pintarMonedas() con valor="+valor+", tipo="+tipo);
 		informacionJPanelMonedas listaBotones = null;
 		btGenerarPdf.setVisible(false);
 		btnNuevaMoneda.setVisible(false);
@@ -372,7 +372,7 @@ public class vista_principal extends JFrame {
 			objetoGenerarPdf.setPais(valor);
 			objetoGenerarPdf.setTipo(tipo);
 			
-			btnNuevaMoneda.setVisible(true);
+			btnNuevaMoneda.setVisible(false); //TODO ponemos el boton oculto de insertar nuava moneda
 			objetoNuevaMoneda.setNuevoPais(valor);
 			objetoNuevaMoneda.setNuevoContinente(botonPulsado);
 			
@@ -390,7 +390,7 @@ public class vista_principal extends JFrame {
 			break;
 		}
 		default:{
-			util.escribirTrazas(NOMBRE_CLASS,"pintarMonedas() No esta definido el tipo");
+			uLog.escribirTrazas(NOMBRE_CLASS,"pintarMonedas() No esta definido el tipo");
 			break;
 			}
 		}
@@ -405,7 +405,7 @@ public class vista_principal extends JFrame {
 	 * Crea la estructuras de las diferentes monedas de peseta
 	 */
 	private informacionJPanelMonedas crearObjetoMonedasPeseta(String periodo) {
-		util.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasPeseta() INICIO");
+		uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasPeseta() INICIO");
 		List<monedaPeseta> nombreMoneda;
 		informacionJPanelMonedas valorFinal = new informacionJPanelMonedas();
 		try {
@@ -426,10 +426,10 @@ public class vista_principal extends JFrame {
 					valorFinal.setComponenteLista(new informacionBotonMoneda(nombre,patImagen,mo.getIdMoneda(),"",mo.isTengoMoneda()));
 				}
 			}
-			else util.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasPeseta() no tenemos informacion");
+			else uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasPeseta() no tenemos informacion");
 		} 
 		catch (Exception e) {
-			util.escribirError(NOMBRE_CLASS,"Exception en crearObjetoMonedasPeseta(), " + e.toString());			
+			uLog.escribirError(NOMBRE_CLASS,"Exception en crearObjetoMonedasPeseta(), " + e.toString());			
 		}
 
 		return valorFinal;
@@ -439,7 +439,7 @@ public class vista_principal extends JFrame {
 	 * Nos muestra la lista de billetes
 	 */
 	private informacionJPanelMonedas crearObjetoBilletes() {
-		util.escribirTrazas(NOMBRE_CLASS,"crearObjetoBilletes() INICIO");
+		uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoBilletes() INICIO");
 
 //		List<billete> nombreBilletes;
 		informacionJPanelMonedas valorFinal = new informacionJPanelMonedas();
@@ -472,7 +472,7 @@ public class vista_principal extends JFrame {
 	 * Nos muestra la lista de monedas
 	 */
 	private informacionJPanelMonedas crearObjetoMonedasMundo(String pais) {
-		util.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasMundo() INICIO");
+		uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasMundo() INICIO");
 		List<moneda> nombreMoneda;
 		informacionJPanelMonedas valorFinal = new informacionJPanelMonedas();
 		
@@ -493,10 +493,10 @@ public class vista_principal extends JFrame {
 					valorFinal.setComponenteLista(new informacionBotonMoneda(mo.getDenominacionMoneda().toString(),patImagen,mo.getIdMoneda(),botonPulsado,false));
 				}
 			}
-			else util.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasMundo() no tenemos informacion");
+			else uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasMundo() no tenemos informacion");
 		} 
 		catch (Exception e) {
-			util.escribirError(NOMBRE_CLASS,"Exception en crearObjetoMonedasMundo(), " + e.toString());			
+			uLog.escribirError(NOMBRE_CLASS,"Exception en crearObjetoMonedasMundo(), " + e.toString());			
 		}
 
 		return valorFinal;
@@ -505,7 +505,7 @@ public class vista_principal extends JFrame {
 	 * Nos muestra la lista de monedas de EURO
 	 */
 	private informacionJPanelMonedas crearObjetoMonedasEuro(final String pais) {
-		util.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasEuro() INICIO");
+		uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasEuro() INICIO");
 		List<listaMonedaEuro> listaEuros;
 		informacionJPanelMonedas valorFinal = new informacionJPanelMonedas();
 
@@ -528,7 +528,7 @@ public class vista_principal extends JFrame {
 						String aux="";
 						if (ii>0)aux=""+(ii+1);
 						String patImagen=pais.replace(" ","") + aux + "_" + monedaEuro.euroDenominacion[i];
-						valorFinal.setComponenteLista(new informacionBotonMoneda(util.getDenominacionString(i,false),patImagen,mo.isTengoMoneda(i),pais.replace(" ","")));
+						valorFinal.setComponenteLista(new informacionBotonMoneda(utils.getDenominacionString(i,false),patImagen,mo.isTengoMoneda(i),pais.replace(" ","")));
 					}
 				}	
 				
@@ -538,10 +538,10 @@ public class vista_principal extends JFrame {
 				valorFinal.setTitulo(constantesLiterales.TXT_MONEDA_EURO + pais);
 				valorFinal.setValorAux(pais);
 			}
-			else util.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasEuro() no tenemos informacion");
+			else uLog.escribirTrazas(NOMBRE_CLASS,"crearObjetoMonedasEuro() no tenemos informacion");
 		} 
 		catch (Exception e) {
-			util.escribirError(NOMBRE_CLASS,"Exception en crearObjetoMonedasEuro(), " + e.toString());			
+			uLog.escribirError(NOMBRE_CLASS,"Exception en crearObjetoMonedasEuro(), " + e.toString());			
 		}
 		
 		return valorFinal;

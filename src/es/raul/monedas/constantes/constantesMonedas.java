@@ -1,5 +1,7 @@
 package es.raul.monedas.constantes;
 
+import java.io.File;
+
 /**
  * @author raul.gonzalez
  * 
@@ -14,12 +16,11 @@ public  interface constantesMonedas {
 	/**
 	 * Path
 	 */
-	public final static String PATH_MONEDAS = "MonedasdelMundo";
-	public final static String PATH_EURO = "OtrasColecciones\\Euro";
-	public final static String PATH_EURO_CON = "OtrasColecciones\\Euro\\conmemorativas";
-	public final static String PATH_BILLETES = "OtrasColecciones\\Billetes";
-	public final static String PATH_PESETAS = "OtrasColecciones\\Pesetas";
-	public final static String PATH_SEPARADOR = "/";
+	//public final static String PATH_MONEDAS = "MonedasdelMundo";
+	public final static String PATH_EURO = "OtrasColecciones" + File.separator + "Euro";
+	public final static String PATH_EURO_CON = "OtrasColecciones" + File.separator + "conmemorativas";
+	public final static String PATH_BILLETES = "OtrasColecciones" + File.separator + "Billetes";
+	public final static String PATH_PESETAS = "OtrasColecciones" + File.separator + "Pesetas";
 	public final static String IMAGEN_PATH_PNG = ".png";
 	public final static String IMAGEN_PATH_JPG = ".jpg";
 	public final static String IMAGEN_PATH_GIF = ".gif";

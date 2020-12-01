@@ -1,7 +1,7 @@
 package es.raul.monedas.objetos.mundo;
 
 import es.raul.monedas.constantes.constantesLiterales;
-import es.raul.monedasAPP.utilidades.utils;
+import es.raul.monedasAPP.utilidades.utilLog;
 
 /**
  * @author raul.gonzalez
@@ -13,7 +13,6 @@ import es.raul.monedasAPP.utilidades.utils;
 public class denominacion{
 	//Una isntancia del objeto de utilidades
 	private final static String NOMBRE_CLASS="Obj-denominacion";
-	private utils util = utils.getInstance();
 
 	private String valor;	//numerico de la moneda 				(Obligatoria)   DB_MONEDAS_VALOR
 	private String año;		//acuñacion de la moneda				(Opcional)		DB_MONEDAS_DATE
@@ -134,7 +133,7 @@ public class denominacion{
 			if (palabrasSeparadas.length==3) currency = currency + " " + palabrasSeparadas[2].toLowerCase();  // en el caso que la currency sea compuesta
 		}
 		catch(Exception e){
-			util.escribirError(NOMBRE_CLASS,"descomponerValores, excepcion=" + e.getMessage());
+			utilLog.getInstance().escribirError(NOMBRE_CLASS,"descomponerValores, excepcion=" + e.getMessage());
 		}
 	}
 }

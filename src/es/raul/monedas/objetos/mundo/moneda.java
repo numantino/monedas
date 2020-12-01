@@ -3,7 +3,7 @@ package es.raul.monedas.objetos.mundo;
 import java.io.File;
 
 import es.raul.monedas.constantes.constantesMonedas;
-import es.raul.monedasAPP.utilidades.utils;
+import es.raul.monedasAPP.utilidades.utilLog;
 
 /**
  * @author raul.gonzalez
@@ -87,8 +87,9 @@ public class moneda implements Comparable<moneda>{
 	/**
 	 * No todas las monedas son KM#, tambine existen Y#, se crea una lista con ellas 
 	 */
-	private boolean isKM(String pais){	
-		return !utils.getInstance().esY(pais);
+	private boolean isKM(String pais){
+		//TODO esta parte la tengo que insertar en la DB
+		return true;
 	}
 	@Override
 	public int compareTo(moneda o) {
@@ -98,7 +99,7 @@ public class moneda implements Comparable<moneda>{
 				+ this.getDenominacionMoneda().getValorCompare()  
 				+ this.getDenominacionMoneda().getAnoCompare()
 				);
-		utils.getInstance().escribirTrazas("prueba","valor "+this.getDenominacionMoneda().getCurrencyCompare());
+		utilLog.getInstance().escribirTrazas("prueba","valor "+this.getDenominacionMoneda().getCurrencyCompare());
 		String b=new String(
 				o.getDenominacionMoneda().getCurrencyCompare()  
 				+ o.getDenominacionMoneda().getValorCompare()  

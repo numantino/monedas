@@ -1,6 +1,5 @@
 package es.raul.monedasAPP.utilidades;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.raul.monedas.constantes.constantesDatabase;
-import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedas.constantes.constantesMonedas.CONTINENTES;
 import es.raul.monedas.objetos.billete.billete;
 import es.raul.monedas.objetos.euros.listaMonedaEuro;
@@ -33,9 +31,10 @@ public class lecturasDB {
 
 	private final static String NOMBRE_CLASS="lecturasDB   ";
 	//Ruta de la DB
-	private final static String PATH_DB =  utils.getPath() + File.separator + constantesMonedas.PATH_MONEDAS + File.separator + constantesDatabase.DB_NOMBRE;
+	private String PATH_DB; //		//Ruta de la base de datos
+	//PATH_DB= PATH_PC + File.separator + constantesDatabase.DB_NOMBRE;
 	//Una isntancia del objeto de utilidades
-	private utils util = utils.getInstance();
+	private utilLog uLog = utilLog.getInstance();
 	//SQL comunes
 	private final static String sqlFinMasComa = "';";
 	private final static String sqlFin = ";";
@@ -49,6 +48,8 @@ public class lecturasDB {
 	 * Constructor del la conexion DB
 	 */
 	public lecturasDB(){
+		//
+		PATH_DB =  utils.getInstance().getPath() + constantesDatabase.DB_NOMBRE;
 		//Inicialilzamos la DB
 		openDB();
 	}
@@ -64,17 +65,17 @@ public class lecturasDB {
 			rs = stmt.executeQuery(sql);	
 		}catch (SQLException s){
 			//Este error es porque la Tabla ya existe
-			util.escribirExcepcion(NOMBRE_CLASS,"DBExecuteQuery", s);
+			uLog.escribirExcepcion(NOMBRE_CLASS,"DBExecuteQuery", s);
 			if (s.getErrorCode() == 0) {
-				util.escribirError(NOMBRE_CLASS,"DBExecuteQuery--> SQL ERROR: Dato [" + sql + "] por [" + s.getMessage() + "]");
+				uLog.escribirError(NOMBRE_CLASS,"DBExecuteQuery--> SQL ERROR: Dato [" + sql + "] por [" + s.getMessage() + "]");
 				return null;
 			}
 			else{
-				util.escribirError(NOMBRE_CLASS,"DBExecuteQuery--> SQL ERROR al insertar [" + sql + "] por [" + s.getMessage() + "]");
+				uLog.escribirError(NOMBRE_CLASS,"DBExecuteQuery--> SQL ERROR al insertar [" + sql + "] por [" + s.getMessage() + "]");
 				return null;		
 			}		
 		}catch ( Exception e) {
-			util.escribirError(NOMBRE_CLASS,"DBExecuteQuery--> SQL ERROR al insertar [" + sql + "]");
+			uLog.escribirError(NOMBRE_CLASS,"DBExecuteQuery--> SQL ERROR al insertar [" + sql + "]");
 			return null;
 		}
 		return rs;
@@ -86,15 +87,15 @@ public class lecturasDB {
 	public void openDB(){
 		//Inicialilzamos la DB
 		try {
-			util.escribirTrazas(NOMBRE_CLASS,"PATH DB: [" + PATH_DB +"]");
+			uLog.escribirTrazas(NOMBRE_CLASS,"PATH DB: [" + PATH_DB +"]");
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:" + PATH_DB);
 			stmt = c.createStatement();
 		}catch (SQLException s){
 			//Este error es porque la Tabla ya existe
-			util.escribirExcepcion(NOMBRE_CLASS,"openDB", s);	
+			uLog.escribirExcepcion(NOMBRE_CLASS,"openDB", s);	
 		}catch ( Exception e) {
-			util.escribirExcepcion(NOMBRE_CLASS,"openDB", e);
+			uLog.escribirExcepcion(NOMBRE_CLASS,"openDB", e);
 		}
 	}
 	/**
@@ -107,7 +108,7 @@ public class lecturasDB {
 				stmt.close();
 				c.close();
 			} catch (SQLException e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"closeDB", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"closeDB", e);
 			} 
 		}
 	}
@@ -172,7 +173,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerPais + continente + "%';";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerPaisNombres--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerPaisNombres--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -182,7 +183,7 @@ public class lecturasDB {
 					nombrePaises.add(valores.getString(constantesDatabase.MONEDAS_PAIS));
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerPaisNombres", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerPaisNombres", e);
 			}
 		}
 
@@ -206,20 +207,20 @@ public class lecturasDB {
 
 		//Primero leemos la lista de monedas
 		String sql = sqlLeerCurrency + pais + "';";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 1: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 1: [" + sql + "]");
 		String[] listCurrency = null;
 		ResultSet valores=DBExecuteQuery(sql);
 		if (valores!=null){
 			try {
 				listCurrency = valores.getString(1).split(";");
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 1", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 1", e);
 			}
 		}
 		
 		//Obtenemos la informacion de si es KM
 		sql = sqlLeerKM + pais + "';";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 2: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 2: [" + sql + "]");
 		boolean esMonedaKM=true;
 		valores=DBExecuteQuery(sql);
 		if (valores!=null){
@@ -228,13 +229,13 @@ public class lecturasDB {
 				if (valores.getInt(1)==1) esMonedaKM=false;
 				else esMonedaKM=true;
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 2", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 2", e);
 			}
 		}
 
 		//leemos datos de la DB
 		sql = sqlLeerMoneda1 + pais + "' ORDER BY IDMONEDA;";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 3: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 3: [" + sql + "]");
 
 		valores=DBExecuteQuery(sql);
 
@@ -247,7 +248,7 @@ public class lecturasDB {
 					nombreMoneda.add(l);
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 3", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 3", e);
 			}
 		}
 
@@ -264,20 +265,20 @@ public class lecturasDB {
 
 		//Obtenemos la informacion de si es KM
 		String sql = sqlLeerMonedaPais + idMoneda + ";";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 2: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 2: [" + sql + "]");
 		String pais="";
 		ResultSet valores=DBExecuteQuery(sql);
 		if (valores!=null){
 			try {
 				pais = valores.getString(1);
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 2", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 2", e);
 			}
 		}
 		
 		//Obtenemos la informacion de si es KM
 		sql = sqlLeerKM + pais + "';";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 2: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMoneda--> SQL 2: [" + sql + "]");
 		boolean esMonedaKM=true;
 		valores=DBExecuteQuery(sql);
 		if (valores!=null){
@@ -286,13 +287,13 @@ public class lecturasDB {
 				if (valores.getInt(1)==1) esMonedaKM=false;
 				else esMonedaKM=true;
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 2", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMoneda 2", e);
 			}
 		}
 		
 		//leemos datos de la DB
 		sql = sqlLeerMoneda3 + idMoneda + ";";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMonedaExtendida--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMonedaExtendida--> SQL: [" + sql + "]");
 		
 		valores=DBExecuteQuery(sql);
 
@@ -310,7 +311,7 @@ public class lecturasDB {
 					nombreMoneda = new monedaExt(m,valores.getString(constantesDatabase.MONEDAS_COMPOSICION),info,valores.getString(constantesDatabase.MONEDAS_FORMA),valores.getString(constantesDatabase.MONEDAS_NOTA),valores.getString(constantesDatabase.MONEDAS_ESTADO));
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMonedaExtendida", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMonedaExtendida", e);
 			}
 		}
 
@@ -332,13 +333,13 @@ public class lecturasDB {
 			for (int i=0;i<nombrePaises.size();i++){
 
 				sql = sqlContar5 + nombrePaises.get(i) + sqlFinMasComa;
-				util.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroMonedas--> SQL: [" + sql + "]");
+				uLog.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroMonedas--> SQL: [" + sql + "]");
 				ResultSet valores=DBExecuteQuery(sql);
 				if (valores!=null){
 					try {
 						value = value + valores.getInt(1);
 					} catch (Exception e) {
-						util.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPaises", e);
+						uLog.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPaises", e);
 					}
 				}
 			}
@@ -367,7 +368,7 @@ public class lecturasDB {
 				moneda.getNotaMoneda() + "','" +
 				moneda.getEstadoMoneda() + "');";
 
-		util.escribirTrazas(NOMBRE_CLASS,"DBInsertarPais--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBInsertarPais--> SQL: [" + sql + "]");
 		ResultSet valores=DBExecuteQuery(sql);
 	}
 	/**
@@ -378,7 +379,7 @@ public class lecturasDB {
 	public int DBgetIDMoneda(String pais){
 		int value=0;
 		String sql = sqlNewID1 + pais + sqlNewID2;
-		util.escribirTrazas(NOMBRE_CLASS,"DBgetIDMoneda--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBgetIDMoneda--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -386,7 +387,7 @@ public class lecturasDB {
 			try {
 				value = valores.getInt(constantesDatabase.MONEDAS_IDMONEDA) + 1;
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBgetIDMoneda", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBgetIDMoneda", e);
 			}
 		}
 		return value;
@@ -401,7 +402,7 @@ public class lecturasDB {
 		String value = "";
 
 		String sql = sqlNewID3 + continente + sqlNewID4;
-		util.escribirTrazas(NOMBRE_CLASS,"DBgetUltimoIDMoneda--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBgetUltimoIDMoneda--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -409,7 +410,7 @@ public class lecturasDB {
 			try {
 				value = Integer.toString(valores.getInt(constantesDatabase.MONEDAS_IDMONEDA)).substring(0,4);
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBgetUltimoIDMoneda", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBgetUltimoIDMoneda", e);
 				value="";
 			}
 		}
@@ -447,7 +448,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerPaisesEuro;
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerPaisEuro--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerPaisEuro--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -457,7 +458,7 @@ public class lecturasDB {
 					nombrePaises.add(valores.getString(constantesDatabase.EURO_PAIS));
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerPaisEuro", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerPaisEuro", e);
 			}
 		}
 
@@ -473,7 +474,7 @@ public class lecturasDB {
 		List<listaMonedaEuro> todasMonedas = new ArrayList<listaMonedaEuro>();
 
 		String sql = sqlLeerMonedaEuro + pais + sqlFinMasComa;
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMonedaEuro--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMonedaEuro--> SQL: [" + sql + "]");
 		//leemos datos de la DB
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -493,7 +494,7 @@ public class lecturasDB {
 					todasMonedas.add(new listaMonedaEuro(pais, moneda, valores.getInt(constantesDatabase.EURO_CONME)));
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMonedaEuro", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMonedaEuro", e);
 			}
 		}
 
@@ -509,7 +510,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerMonedaEuroCon + pais + 	"' ORDER BY " + constantesDatabase.EURO_C_FECHA + " ASC;";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerMonedaEuroCon--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerMonedaEuroCon--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -522,7 +523,7 @@ public class lecturasDB {
 					listaMoneda.add(moneda);
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerMonedaEuroCon", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerMonedaEuroCon", e);
 			}
 		}
 
@@ -539,14 +540,14 @@ public class lecturasDB {
 
 		for(int i=0; i<monedaEuro.MAX_MONEDAS_ERUROS;i++){
 			sql = sqlCount + constantesDatabase.EURO_COLUM[i+2] + sqlContar2 + constantesDatabase.EURO_COLUM[i+2] + "=" + val + sqlFin;
-			util.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroEuros--> SQL: [" + sql + "]");
+			uLog.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroEuros--> SQL: [" + sql + "]");
 
 			ResultSet valores=DBExecuteQuery(sql);
 			if (valores!=null){
 				try {
 					value = value + valores.getInt(1);
 				} catch (Exception e) {
-					util.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroEuros", e);
+					uLog.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroEuros", e);
 				}
 			}
 		}
@@ -563,7 +564,7 @@ public class lecturasDB {
 		String sql = "";
 
 		sql = sqlContar3;
-		util.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroEurosConmemorativos--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroEurosConmemorativos--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -571,7 +572,7 @@ public class lecturasDB {
 			try {
 				value = value + valores.getInt(1);
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPaises", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPaises", e);
 			}
 		}
 
@@ -585,7 +586,7 @@ public class lecturasDB {
 		String sql = "UPDATE " + constantesDatabase.EURO_NAME + " SET " +
 				posicion + "='1' WHERE " +
 				constantesDatabase.EURO_PAIS + "='" + pais + "';";
-		util.escribirTrazas(NOMBRE_CLASS,"SQL update euro [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"SQL update euro [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);		
 	}
@@ -637,7 +638,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerPeseta1;
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerPeriodosPeseta--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerPeriodosPeseta--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -647,7 +648,7 @@ public class lecturasDB {
 					nombrePeriodos.add(valores.getString(constantesDatabase.PESETA_PERIODO));
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerPeriodosPeseta", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerPeriodosPeseta", e);
 			}
 		}
 
@@ -664,7 +665,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerPeseta2 + periodo + sqlPesetaOrdenadoKM;
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerPeseta--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerPeseta--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -681,7 +682,7 @@ public class lecturasDB {
 					nombreMoneda.get(i).setTengoMoneda(tengoPeseta(idMoneda));
 				}				
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerPeseta", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerPeseta", e);
 			}
 		}
 
@@ -695,7 +696,7 @@ public class lecturasDB {
 	public boolean tengoPeseta(int idPeseta){
 		boolean value=false;
 		String sql = sqlTengoPeseta1 + idPeseta + sqlTengoPeseta2;
-		util.escribirTrazas(NOMBRE_CLASS,"tengoPeseta--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"tengoPeseta--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -703,7 +704,7 @@ public class lecturasDB {
 			try {
 				if (valores.getInt(1) != 0) value=true;
 			} catch (SQLException e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"tengoPeseta", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"tengoPeseta", e);
 			}
 		}
 
@@ -719,7 +720,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerPeseta3 + id + ";";
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerPesetaExtendida--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerPesetaExtendida--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -735,7 +736,7 @@ public class lecturasDB {
 
 				if(valores.getInt(constantesDatabase.PESETA_ESTRELLAS)>0){					
 					sql = sqlLeerPeseta4 + id  + ";";
-					util.escribirTrazas(NOMBRE_CLASS,"DBLeerPesetaExtendida--> segunda consulta SQL: [" + sql + "]");
+					uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerPesetaExtendida--> segunda consulta SQL: [" + sql + "]");
 
 					valores=DBExecuteQuery(sql);
 
@@ -755,7 +756,7 @@ public class lecturasDB {
 					mo.setEstrellas(lista);
 				} 
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerPesetaExtendida", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerPesetaExtendida", e);
 			}
 		}
 
@@ -775,7 +776,7 @@ public class lecturasDB {
 				constantesDatabase.PESETA_A_ID + "=" + id + " AND " +
 				constantesDatabase.PESETA_A_ANO + "='" + fecha + "' AND " +
 				constantesDatabase.PESETA_A_ESTRELLA + "='" + estrella + "';";
-		util.escribirTrazas(NOMBRE_CLASS,"SQL update peseta [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"SQL update peseta [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);		
 	}
@@ -788,7 +789,7 @@ public class lecturasDB {
 		int [] value= new int[2];
 
 		String sql = sqlContarPesetas;
-		util.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroPesetas--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroPesetas--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -805,7 +806,7 @@ public class lecturasDB {
 					value[1]++;
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPesetas", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPesetas", e);
 			}
 		}
 
@@ -821,7 +822,7 @@ public class lecturasDB {
 		int value=0;
 
 		String sql = sqlContarPesetasTotales;
-		util.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroPesetasTotales--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBContarNumeroPesetasTotales--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -831,7 +832,7 @@ public class lecturasDB {
 					value++;
 				}
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPesetasTotales", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBContarNumeroPesetasTotales", e);
 			}
 		}
 
@@ -844,7 +845,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerListaBilletes;
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerBilletes--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerBilletes--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -861,7 +862,7 @@ public class lecturasDB {
 					listaBilletes.add(b);
 				}				
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerBilletes", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerBilletes", e);
 			}
 		}
 
@@ -880,7 +881,7 @@ public class lecturasDB {
 
 		//leemos datos de la DB
 		String sql = sqlLeerFechaActualizacion + key + sqlFinMasComa;
-		util.escribirTrazas(NOMBRE_CLASS,"DBLeerFechaActualilzacion--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBLeerFechaActualilzacion--> SQL: [" + sql + "]");
 
 		ResultSet valores=DBExecuteQuery(sql);
 
@@ -888,7 +889,7 @@ public class lecturasDB {
 			try {
 				dato = valores.getString(constantesDatabase.INFORMACION_DESCRIPCION);
 			} catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"DBLeerFechaActualilzacion", e);
+				uLog.escribirExcepcion(NOMBRE_CLASS,"DBLeerFechaActualilzacion", e);
 				dato="";
 			}
 		}
@@ -904,14 +905,14 @@ public class lecturasDB {
 				constantesDatabase.INFORMACION_DESCRIPCION + "='" + dato + "' WHERE " +
 				constantesDatabase.INFORMACION_TAG + "='" + key + "';";
 
-		util.escribirTrazas(NOMBRE_CLASS,"DBModificarDatosInformacion--> SQL: [" + sql + "]");
+		uLog.escribirTrazas(NOMBRE_CLASS,"DBModificarDatosInformacion--> SQL: [" + sql + "]");
 		ResultSet valores = DBExecuteQuery(sql);
 	}
 	/**
 	 * 
 	 */
 	public void modificarFechaUltimoCambio(){
-//		util.escribirTrazas(NOMBRE_CLASS,"modificarFechaUltimoCambio--> Modificamos la ultima fecha en la que se han modificado los datos");
+//		uLog.escribirTrazas(NOMBRE_CLASS,"modificarFechaUltimoCambio--> Modificamos la ultima fecha en la que se han modificado los datos");
 //		//Obtener la fecha del sistema
 //		DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 //		//Modificarla

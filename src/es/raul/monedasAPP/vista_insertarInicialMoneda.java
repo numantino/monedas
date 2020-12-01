@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 import es.raul.monedas.constantes.constantesLiterales;
 import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedasAPP.utilidades.lecturasDB;
-import es.raul.monedasAPP.utilidades.utils;
+import es.raul.monedasAPP.utilidades.utilLog;
 
 /**
  * Clase utilizada para incluir una nueva moneda, en esta clase solo se le pide el nombre del continente y el nombre del pais, 
@@ -45,7 +45,6 @@ public class vista_insertarInicialMoneda extends JFrame {
 
 	//Lectura de la DB
 	private lecturasDB lectura = new lecturasDB();
-	private utils util = utils.getInstance();
 
 	/**
 	 * Launch the application.
@@ -187,11 +186,11 @@ public class vista_insertarInicialMoneda extends JFrame {
 	 * Con la infirmacion recolectada, se llama a la nueva vista para continuar modificando la imagen.
 	 */
 	protected void pulsadoBotonInserta() {
-		util.escribirTrazas(NOMBRE_CLASS,"pulsadoBotonInserta()");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"pulsadoBotonInserta()");
 		boolean nuevo = false;
 		if (paisSel!=null && paisSel.length()==0){
 			paisSel = textNuevoPais.getText();
-			util.escribirTrazas(NOMBRE_CLASS,"pulsadoBotonInserta(), el valor del nuevo pais es " + paisSel);
+			utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"pulsadoBotonInserta(), el valor del nuevo pais es " + paisSel);
 			nuevo=true;
 		}
 
@@ -208,7 +207,7 @@ public class vista_insertarInicialMoneda extends JFrame {
 	 * el nombre de un nuevo pais.
 	 */
 	private void generarListaPaises(String continente) {
-		util.escribirTrazas(NOMBRE_CLASS,"generarListaPaises(), el continente pulsado es " + continente);
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"generarListaPaises(), el continente pulsado es " + continente);
 		//asignamos el valor del continente
 		continenteSel = continente;
 
@@ -225,7 +224,7 @@ public class vista_insertarInicialMoneda extends JFrame {
 				for (int i=0;i<listaPaises.size();i++) comboBoxPais.addItem(listaPaises.get(i));
 			}
 			catch (Exception e) {
-				util.escribirExcepcion(NOMBRE_CLASS,"generarListaPaises()",e);
+				utilLog.getInstance().escribirExcepcion(NOMBRE_CLASS,"generarListaPaises()",e);
 			}
 			
 			//activamos la pulsacion de la lista
@@ -236,7 +235,7 @@ public class vista_insertarInicialMoneda extends JFrame {
 					//habilitamos la opcion para insertar un nuevo pais
 					String valor = comboBoxPais.getSelectedItem().toString();					
 					if (valor.equalsIgnoreCase(constantesLiterales.TXT_SEL_NUEVO_PAIS)){
-						util.escribirTrazas(NOMBRE_CLASS,"generarListaPaises(), Insertamos un nuevo pais");
+						utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"generarListaPaises(), Insertamos un nuevo pais");
 						
 						//habilitamos la opcion
 						lblnuevoPais.setVisible(true);

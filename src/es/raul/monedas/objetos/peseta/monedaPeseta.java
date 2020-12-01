@@ -1,6 +1,6 @@
 package es.raul.monedas.objetos.peseta;
 
-import es.raul.monedasAPP.utilidades.utils;
+import es.raul.monedasAPP.utilidades.utilLog;
 
 /**
  * @author raul.gonzalez
@@ -100,7 +100,7 @@ public class monedaPeseta implements Comparable<monedaPeseta>{
 			if (this.valorMoneda==null) return "0";
 			if (this.valorMoneda.contains("2000")) return "99999999";
 			
-			utils.getInstance().escribirTrazas("getValorCompare","INICIO "+valorMoneda);
+			utilLog.getInstance().escribirTrazas("getValorCompare","INICIO "+valorMoneda);
 			if (this.valorMoneda.contains("CENTIMO") || this.valorMoneda.contains("CENTIMOS")){
 				valor=Integer.parseInt(this.valorMoneda.substring(0, this.valorMoneda.indexOf("CENTIMO")).trim());
 			}

@@ -29,6 +29,7 @@ import es.raul.monedas.objetos.peseta.estrellasPesetas;
 import es.raul.monedas.objetos.peseta.monedaPesetaAux;
 import es.raul.monedasAPP.objetos.imagenJpanel;
 import es.raul.monedasAPP.utilidades.lecturasDB;
+import es.raul.monedasAPP.utilidades.utilLog;
 import es.raul.monedasAPP.utilidades.utils;
 
 /**
@@ -81,7 +82,6 @@ public class vista_infoMonedasPeseta extends JFrame {
 
 	//Lectura de la DB
 	private lecturasDB lectura = new lecturasDB();
-	private utils util = utils.getInstance();
 
 	/**
 	 * Launch the application.
@@ -363,7 +363,7 @@ public class vista_infoMonedasPeseta extends JFrame {
 	 * MONEDA PESETA
 	 */
 	public void mostrarMonedaPeseta(int idMoneda, String periodo){
-		util.escribirTrazas(NOMBRE_CLASS,"mostrarMonedaPeseta() Mostramos la informacion de la moneda con ID="+idMoneda);
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"mostrarMonedaPeseta() Mostramos la informacion de la moneda con ID="+idMoneda);
 
 		//Obtenemos la informacion de la DB
 		if (moneda==null) moneda = lectura.DBLeerPesetaExtendida(idMoneda);
@@ -393,11 +393,11 @@ public class vista_infoMonedasPeseta extends JFrame {
 			//Informacion de las estrellas
 			pintarDatosEstrella(moneda.getEstrellas());
 		}
-		else util.escribirTrazas(NOMBRE_CLASS,"mostrarMonedaPeseta() Los datos de la moneda no se han obtenido correctamente");
+		else utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"mostrarMonedaPeseta() Los datos de la moneda no se han obtenido correctamente");
 	}
 
 	public void pintarDatosEstrella(List<estrellasPesetas> datosEstrellas){
-		util.escribirTrazas(NOMBRE_CLASS,"pintarDatosEstrella() ");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"pintarDatosEstrella() ");
 
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
 		modelo.setNumRows(0);
@@ -411,11 +411,11 @@ public class vista_infoMonedasPeseta extends JFrame {
 	 * Metodo para incluir una nueva moneda
 	 */
 	protected void incluirMoneda(String fecha, String estrella, String estado, int position) {
-		util.escribirTrazas(NOMBRE_CLASS,"incluirMoneda() INICIO");
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"incluirMoneda() INICIO");
 
 		int reply = JOptionPane.showConfirmDialog(null, constantesLiterales.TXT_MSN_MODIFICAR, "", JOptionPane.YES_NO_OPTION);
 		if (reply == JOptionPane.YES_OPTION){
-			util.escribirTrazas(NOMBRE_CLASS, "Se va a modificar la moneda con ID=" + ID_MONEDA +", FECHA="+fecha+", ESTRELLA="+estrella+", ESTADO="+estado);
+			utilLog.getInstance().escribirTrazas(NOMBRE_CLASS, "Se va a modificar la moneda con ID=" + ID_MONEDA +", FECHA="+fecha+", ESTRELLA="+estrella+", ESTADO="+estado);
 			//Incluimos la moneda
 			lectura.DBIncluirPeseta(ID_MONEDA, fecha, estrella,estado);
 			
@@ -430,8 +430,8 @@ public class vista_infoMonedasPeseta extends JFrame {
 	 * Inserta la ruta de la imagen en el objeto
 	 */
 	private void getPathMoneda(String ruta, String nombre, String extension){
-		String path = util.obtenerPathImagen(ruta, nombre, extension);
-		util.escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
+		String path = utils.getInstance().obtenerPathImagen(ruta, nombre, extension);
+		utilLog.getInstance().escribirTrazas(NOMBRE_CLASS,"Path imagen: " + path);
 		panelImagen.setBackground(path);
 	}
 }
