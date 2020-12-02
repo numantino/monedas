@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import es.raul.monedas.constantes.constantesDatabase;
 import es.raul.monedas.constantes.constantesMonedas;
@@ -19,6 +21,7 @@ public class utils {
 	
 	private String PATH;
 	private String PATH_PC;
+	private List<String> datosY;
 
 	public static utils getInstance () {
 		return instancia;
@@ -29,7 +32,11 @@ public class utils {
 		PATH = Paths.get("").toAbsolutePath().toString() + File.separator;
 		System.out.println("PATH="+PATH);
 		//Ruta donde se encuentra el proyecto
-		PATH_PC = leerFichero(PATH,CONFIGURADOR,"PATH_PC");
+		String p = leerFichero(PATH,CONFIGURADOR,"PATH_PC");
+		if (p.isEmpty()) PATH_PC=PATH;
+		else PATH_PC=p;
+		//Realizamos lectura de paises Y
+		lecturaDatosY();
 	}
 	/**
 	 * Funcion que lee de un fichero de texto
@@ -61,14 +68,14 @@ public class utils {
 	public String obtenerPathImagen(String ruta, String nombre, String extension){
 		String path = "";
 		try{
-			path= PATH_PC + File.separator 
-					+ ruta + File.separator					
+			path= PATH_PC
+					//+ ruta + File.separator					
 					+ nombre + extension;
 
 			File imgFile = new  File(path);
 			if(!imgFile.exists()){
 				//Ponemos la imagen por defecto
-				path = PATH_PC + File.separator 			
+				path = PATH_PC			
 						+ constantesMonedas.IMAGEN_BASE + constantesMonedas.IMAGEN_PATH_PNG;
 			}
 		}
@@ -81,11 +88,25 @@ public class utils {
 	 * @return
 	 */
 	public String getPath() {
-		return PATH_PC + File.separator;
+		return PATH_PC;
 	}
 	public boolean isTrazas() {
 		String val = leerFichero(PATH,CONFIGURADOR,"ACTIVAR_TRAZAS").toLowerCase();
-		if (val.equalsIgnoreCase("true")) return true;
+		if (val.equalsIgnoreCase("false")) return false;
+		else return true;
+	}
+	private void lecturaDatosY() {
+		String datos = leerFichero(PATH,CONFIGURADOR,"VAL_Y");
+		datosY = new ArrayList<String>();
+		try {
+			if (!datos.isEmpty()) {
+				String[] parts = datos.split(";");
+				for (int i=0; i>parts.length; i++) datosY.add(parts[i]);
+			}
+		} catch (Exception e) {}
+	}
+	public boolean esY(String pais) {
+		if (datosY.contains(pais)) return true;
 		else return false;
 	}
 	//****************************************** static ***********************************************************

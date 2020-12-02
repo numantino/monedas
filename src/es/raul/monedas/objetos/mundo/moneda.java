@@ -4,6 +4,7 @@ import java.io.File;
 
 import es.raul.monedas.constantes.constantesMonedas;
 import es.raul.monedasAPP.utilidades.utilLog;
+import es.raul.monedasAPP.utilidades.utils;
 
 /**
  * @author raul.gonzalez
@@ -88,8 +89,7 @@ public class moneda implements Comparable<moneda>{
 	 * No todas las monedas son KM#, tambine existen Y#, se crea una lista con ellas 
 	 */
 	private boolean isKM(String pais){
-		//TODO esta parte la tengo que insertar en la DB
-		return true;
+		return utils.getInstance().esY(pais);
 	}
 	@Override
 	public int compareTo(moneda o) {
