@@ -1,0 +1,2 @@
+1 - El primer paso creo que es crear un interfaz grafico
+2 - Leer de la DB
