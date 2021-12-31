@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,8 @@ public class utils {
 	
 	public final String CONFIGURADOR = "coleccionMonedas.conf";
 	
-	private String PATH;
-	private String PATH_PC;
+	private Path PATH;
+	private Path PATH_PC;
 	private List<String> datosY;
 
 	public static utils getInstance () {
@@ -29,19 +30,19 @@ public class utils {
 	
 	private utils(){
 		//Obtenemos el directorio actual
-		PATH = Paths.get("").toAbsolutePath().toString() + File.separator;
+		PATH = Paths.get("").toAbsolutePath();
 		System.out.println("PATH="+PATH);
 		//Ruta donde se encuentra el proyecto
 		String p = leerFichero(PATH,CONFIGURADOR,"PATH_PC");
 		if (p.isEmpty()) PATH_PC=PATH;
-		else PATH_PC=p;
+		else PATH_PC=Paths.get(p);
 		//Realizamos lectura de paises Y
 		lecturaDatosY();
 	}
 	/**
 	 * Funcion que lee de un fichero de texto
 	 */
-	public String leerFichero(String path, String file, String datoLeer){
+	public String leerFichero(Path path, String file, String datoLeer){
 		String datoLeido="";
 
 		
@@ -49,7 +50,7 @@ public class utils {
 		boolean fin=false;
 		FileReader f;
 		try {
-			f = new FileReader(path + file);
+			f = new FileReader(path.toString() + file);
 			BufferedReader b = new BufferedReader(f);
 			while(!fin && (cadena = b.readLine())!=null) {
 				String[] parts = cadena.split("=");
@@ -59,7 +60,9 @@ public class utils {
 				}
 			}
 			b.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+			System.err.println(e);
+		}
 		return datoLeido;
 	}
 	/**
@@ -79,7 +82,9 @@ public class utils {
 						+ constantesMonedas.IMAGEN_BASE + constantesMonedas.IMAGEN_PATH_PNG;
 			}
 		}
-		catch (Exception e) {}
+		catch (Exception e) {
+			System.err.println(e);
+		}
 
 		return path;
 	}
@@ -88,7 +93,7 @@ public class utils {
 	 * @return
 	 */
 	public String getPath() {
-		return PATH_PC;
+		return PATH_PC.toAbsolutePath().toString();
 	}
 	public boolean isTrazas() {
 		String val = leerFichero(PATH,CONFIGURADOR,"ACTIVAR_TRAZAS").toLowerCase();
@@ -103,7 +108,9 @@ public class utils {
 				String[] parts = datos.split(";");
 				for (int i=0; i>parts.length; i++) datosY.add(parts[i]);
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
 	}
 	public boolean esY(String pais) {
 		if (datosY.contains(pais)) return true;

@@ -1,6 +1,7 @@
 package es.raul.monedas.objetos.billete;
 
 public class billete {
+	
 	private int idBillete;
 	private String pais;
 	private String denominacionBillete;
