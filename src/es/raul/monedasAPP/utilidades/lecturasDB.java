@@ -50,7 +50,7 @@ public class lecturasDB {
 	 */
 	public lecturasDB(){
 		//
-		PATH_DB =  utils.getInstance().getPath() + "db" + File.separator + constantesDatabase.DB_NOMBRE;
+		PATH_DB =  utils.getInstance().getPath() + File.separator + "db" + File.separator + constantesDatabase.DB_NOMBRE;
 		//Inicialilzamos la DB
 		openDB();
 	}

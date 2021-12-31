@@ -50,7 +50,7 @@ public class utils {
 		boolean fin=false;
 		FileReader f;
 		try {
-			f = new FileReader(path.toString() + file);
+			f = new FileReader(path.toString() + File.separator + file);
 			BufferedReader b = new BufferedReader(f);
 			while(!fin && (cadena = b.readLine())!=null) {
 				String[] parts = cadena.split("=");
@@ -61,7 +61,7 @@ public class utils {
 			}
 			b.close();
 		} catch (IOException e) {
-			System.err.println(e);
+			System.err.println("Error leerFichero(" + path.toString() + file + ")" + e);
 		}
 		return datoLeido;
 	}
