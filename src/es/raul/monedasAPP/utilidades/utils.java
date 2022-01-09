@@ -72,7 +72,7 @@ public class utils {
 		String path = "";
 		try{
 			path= PATH_PC
-					//+ ruta + File.separator					
+					+ File.separator + "imagenes" + File.separator + ruta + File.separator					
 					+ nombre + extension;
 
 			File imgFile = new  File(path);
@@ -93,7 +93,7 @@ public class utils {
 	 * @return
 	 */
 	public String getPath() {
-		return PATH_PC.toAbsolutePath().toString();
+		return PATH_PC.toAbsolutePath().toString() + File.separator;
 	}
 	public boolean isTrazas() {
 		String val = leerFichero(PATH,CONFIGURADOR,"ACTIVAR_TRAZAS").toLowerCase();
